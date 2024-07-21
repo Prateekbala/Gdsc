@@ -8,5 +8,14 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "prisma": "^5.17.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.17.0"
+  },
+  "exports": {
+    "./client": "./index.ts"
+  }
 }
