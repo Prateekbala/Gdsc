@@ -3,6 +3,7 @@ import db from "@repo/db/client"
 import { sendVerificationEmail } from '../../api/send/route'
 import {sendEmail} from "../../../mail/mailer"
 export async function POST(req:Request){
+  console.log("came to /api/sign-up");
     const body=await req.json();
     const {email,password}=body
     
@@ -14,7 +15,7 @@ export async function POST(req:Request){
       });
 
       const verifyTokenEncoded = (await bcrypt.hash(email,10)).toString();
-   
+      console.log(verifyTokenEncoded);
       if(existingUser)
         {
           if(existingUser.isverified)
@@ -52,22 +53,22 @@ export async function POST(req:Request){
 
     const emailResponse=await sendEmail({email,verifyTokenEncoded});
         console.log(emailResponse);
-        if (!emailResponse.success) {
-          return Response.json(
-            {
-              success: false,
-              message: emailResponse.message,
-            },
-            { status: 500 }
-          );
-        }
+        // if (!emailResponse.success) {
+        //   return Response.json(
+        //     {
+        //       success: false,
+        //       message: emailResponse.message,
+        //     },
+        //     { status: 500 }
+        //   );
+        // }
         return Response.json(
           {
             success: true,
             message: 'User registered successfully. Please verify your account.',
           },
           { status: 201 }
-    );
+     );
         
      } catch (error) 
     {

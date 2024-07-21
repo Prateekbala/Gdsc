@@ -28,7 +28,7 @@ export const authOptions: NextAuthOptions = {
             credentials.password,
             user.password
           );
-          if (isPasswordCorrect) {
+          if (isPasswordCorrect && user.isverified) {
             return user;
           } else {
             throw new Error('Incorrect password');

@@ -38,7 +38,7 @@ const form = useForm<z.infer<typeof signUpSchema>>({
     defaultValues: {
       email: "",
       password:"",
-      conformPassword:"",
+     //conformPassword:"",
     },
   })
 
@@ -51,7 +51,7 @@ async function onSubmit(data: z.infer<typeof signUpSchema>) {
         description: response.data.message,
       });
       
-      router.replace(`/verify?email=${encodeURIComponent(data.email)}`);
+      router.replace("/sign-in");
       setIsSubmitting(false)
         
     } catch (error) {
@@ -109,7 +109,7 @@ async function onSubmit(data: z.infer<typeof signUpSchema>) {
             </FormItem>
           )}
         />
-        <FormField
+        {/* <FormField
           control={form.control}
           name="conformPassword"
           render={({ field }) => (
@@ -121,7 +121,7 @@ async function onSubmit(data: z.infer<typeof signUpSchema>) {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
         
         <Button type="submit" className='w-full' disabled={IsSubmitting}>
               {IsSubmitting ? (
