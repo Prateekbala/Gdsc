@@ -1,6 +1,6 @@
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import  bcrypt  from 'bcrypt';
+import bcrypt from "bcrypt"
 import db from "@repo/db/client"
 
 export const authOptions: NextAuthOptions = {
@@ -23,9 +23,7 @@ export const authOptions: NextAuthOptions = {
           if (!user) {
             throw new Error('No user found with this email');
           }
-          if (!user.isVerified) {
-            throw new Error('Please verify your account before logging in');
-          }
+         
           const isPasswordCorrect = await bcrypt.compare(
             credentials.password,
             user.password

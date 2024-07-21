@@ -1,22 +1,23 @@
 import  bcrypt  from 'bcrypt';
 import db from "@repo/db/client"
 import { sendVerificationEmail } from '../../api/send/route'
-
+import {sendEmail} from "../../../mail/mailer"
 export async function POST(req:Request){
     const body=await req.json();
-    const {email,password,number}=body
+    const {email,password}=body
     
     try {
       const existingUser=await db.user.findFirst({
         where:{
           email:email,
-          isVerified:true
         }
       });
-      let verifycode = Math.floor(100000 + Math.random() * 900000).toString();
+
+      const verifyTokenEncoded = (await bcrypt.hash(email,10)).toString();
+   
       if(existingUser)
         {
-          if(existingUser.isVerified)
+          if(existingUser.isverified)
           {
               return Response.json(
                 {
@@ -29,8 +30,9 @@ export async function POST(req:Request){
           else{
             const hashedPassword=await bcrypt.hash(password,10);
             existingUser.password=hashedPassword
-            existingUser.verifyCode=verifycode
-            existingUser.verifycodeExpiry= new Date(Date.now() + 3600000);
+            existingUser.verifyToken=verifyTokenEncoded
+            existingUser.verifyTokenExpiry= new Date(Date.now() + 3600000);
+            existingUser.createdAt= new Date(Date.now())
           }
         }
       else{
@@ -38,17 +40,17 @@ export async function POST(req:Request){
         const newUser= await db.user.create({
           data:{
             email:email,
-            number:number,
             password:hashedPassword,
-            verifyCode:verifycode,
-            isVerified:false,
-            verifycodeExpiry:new Date(Date.now()+3600000)
+            isverified:false,
+            verifyToken:verifyTokenEncoded,
+            verifyTokenExpiry:new Date(Date.now()+3600000),
+            createdAt: new Date(Date.now())
           }
         });
       }
       console.log("Error is in sing-up /api 1:")
 
-    const emailResponse=await sendVerificationEmail(email,verifycode);
+    const emailResponse=await sendEmail({email,verifyTokenEncoded});
         console.log(emailResponse);
         if (!emailResponse.success) {
           return Response.json(

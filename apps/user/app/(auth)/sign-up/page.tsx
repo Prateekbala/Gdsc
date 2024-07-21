@@ -13,13 +13,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '../../../components/ui/form';
+} from '../../../@/components/ui/form';
 
-import { Button } from '../../../components/ui/button';
-import { Input } from '../../../components/ui/input';
+import { Button } from '../../../@/components/ui/button';
+import { Input } from '../../../@/components/ui/input';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { toast, useToast } from '../../../components/ui/use-toast';
+import { toast, useToast } from '../../../@/components/ui/use-toast';
 import { signUpSchema } from '../../../schemas/signUpSchema';
 import axios, { AxiosError } from 'axios';
 import { ApiResponse } from '../../../types/ApiResponse';
@@ -37,8 +37,8 @@ const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       email: "",
-      number:"",
       password:"",
+      conformPassword:"",
     },
   })
 
@@ -92,25 +92,6 @@ async function onSubmit(data: z.infer<typeof signUpSchema>) {
               <FormControl>
                 <Input placeholder="email" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="number"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Phone Number</FormLabel>
-              <FormControl>
-                <Input placeholder="Mobile number" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -124,9 +105,19 @@ async function onSubmit(data: z.infer<typeof signUpSchema>) {
               <FormControl>
                 <Input placeholder="password" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="conformPassword"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Conform Password</FormLabel>
+              <FormControl>
+                <Input placeholder="Conform Password" {...field} />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
