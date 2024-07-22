@@ -1,5 +1,5 @@
 
-
+import Sidebar from "../../@/components/ui/sidebar";
 export default function Layout({
   children,
 }: {
@@ -7,7 +7,8 @@ export default function Layout({
 }): JSX.Element {
   return (
     <div>
-            {children}
+      <Sidebar/>
+        {children}
     </div>
   );
 }
