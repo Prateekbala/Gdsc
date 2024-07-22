@@ -25,7 +25,6 @@ export async function POST(request: Request) {
         { status: 404 }
       );
     }
-  
 
     console.log("user.verify code is :",user.verifyToken)
     console.log("verify token is :",verifyTokenEncoded)
