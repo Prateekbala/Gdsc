@@ -2,6 +2,7 @@ import  bcrypt  from 'bcrypt';
 import db from "@repo/db/client"
 import { sendVerificationEmail } from '../../api/send/route'
 import {sendEmail} from "../../../mail/mailer"
+import { NextResponse } from 'next/server';
 export async function POST(req:Request){
   console.log("came to /api/sign-up");
     const body=await req.json();
@@ -15,12 +16,13 @@ export async function POST(req:Request){
       });
 
       const verifyTokenEncoded = (await bcrypt.hash(email,10)).toString();
+      const hashedPassword=await bcrypt.hash(password,10);
       console.log(verifyTokenEncoded);
       if(existingUser)
         {
           if(existingUser.isverified)
           {
-              return Response.json(
+            return NextResponse.json(
                 {
                   success:false,
                   message:"User Already Exists from this Email"
@@ -29,15 +31,19 @@ export async function POST(req:Request){
                 )
           }
           else{
-            const hashedPassword=await bcrypt.hash(password,10);
-            existingUser.password=hashedPassword
-            existingUser.verifyToken=verifyTokenEncoded
-            existingUser.verifyTokenExpiry= new Date(Date.now() + 3600000);
-            existingUser.createdAt= new Date(Date.now())
+            await db.user.update({
+              where:{email:email},
+              data:{
+                password: hashedPassword,
+                verifyToken: verifyTokenEncoded,
+                verifyTokenExpiry: new Date(Date.now() + 3600000),
+                createdAt: new Date()
+              }
+            });
           }
         }
+        
       else{
-        const hashedPassword=await bcrypt.hash(password,10);
         const newUser= await db.user.create({
           data:{
             email:email,
@@ -50,30 +56,29 @@ export async function POST(req:Request){
         });
       }
       console.log("Error is in sing-up /api 1:")
+    
+      try {
+       const response= await sendEmail({email,verifyTokenEncoded});
+       console.log("send-email response :",response)
 
-    const emailResponse=await sendEmail({email,verifyTokenEncoded});
-        console.log(emailResponse);
-        // if (!emailResponse.success) {
-        //   return Response.json(
-        //     {
-        //       success: false,
-        //       message: emailResponse.message,
-        //     },
-        //     { status: 500 }
-        //   );
-        // }
+      } catch (error) {
+        console.log("send-email error :",error)
         return Response.json(
-          {
-            success: true,
-            message: 'User registered successfully. Please verify your account.',
-          },
-          { status: 201 }
-     );
+              {
+                success: false,
+              },
+              { status: 500 }
+            );
+      }
+        return NextResponse.json({
+          success: true,
+          message: 'User registered successfully. Please verify your account.',
+        }, { status: 201 });
         
      } catch (error) 
     {
       console.error('Error registering user:', error);
-      return Response.json(
+      return NextResponse.json(
         {
           success: false,
           message: "Error registering user:",

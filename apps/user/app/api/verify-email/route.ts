@@ -3,7 +3,8 @@ import db from '@repo/db/client';
 export async function POST(request: Request) {
 
   try {
-    const { email, verifyTokenEncoded } = await request.json();
+    const body=await request.json();
+    const { email, verifyTokenEncoded } = body
     console.log("Came to /api/verify-email")
     console.log("email:",email)
     console.log("code:",verifyTokenEncoded)
@@ -27,10 +28,12 @@ export async function POST(request: Request) {
   
 
     console.log("user.verify code is :",user.verifyToken)
-    const isCodeValid = (user.verifyToken==verifyTokenEncoded)
+    console.log("verify token is :",verifyTokenEncoded)
+    const isCodeValid = (user.verifyToken== verifyTokenEncoded)
     const expiryDate = new Date(user.verifyTokenExpiry);
     const currentDate = new Date();
     const isCodeNotExpired = expiryDate > currentDate;
+    console.log(isCodeValid)
     console.log(isCodeNotExpired)
     try {
       if (isCodeValid && isCodeNotExpired) {

@@ -28,20 +28,11 @@ export default function verify() {
   const { toast } = useToast();
   console.log("came to Verify page")
 
-  const form = useForm<z.infer<typeof verifySchema >>({
-        resolver: zodResolver(verifySchema ),
-        defaultValues: {
-          verifyTokenEncoded: ""
-        },
-      })
       
   async function verifyAccount(){
       try {
-      const verifyTokenEncoded = searchParams.get("vtoken")?.toString();
-      const decodedEmail = searchParams.get("email")?.toString();
-
-      console.log(verifyTokenEncoded)
-      console.log(decodedEmail)
+      const verifyTokenEncoded = searchParams.get("vtoken");
+      const decodedEmail = searchParams.get("email");
       const response = await axios.post('/api/verify-email', {
         verifyTokenEncoded: verifyTokenEncoded,
         email:decodedEmail

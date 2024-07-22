@@ -15,7 +15,7 @@ export const sendEmail=async ({ email, verifyTokenEncoded }: { email: string; ve
         from:'pratik125@gmail.com',
         to :email,
         subject:"Verify Your Email",
-        html:`<p>Click <a href="${process.env.domain}/verifyemail?emai=${encodeURIComponent(email)}?vtoken=${verifyTokenEncoded}">here</a>to verify your Email</p>`
+        html:`<p>Click <a href="${process.env.domain}/verifyemail?email=${encodeURIComponent(email)}&vtoken=${verifyTokenEncoded}">here</a>to verify your Email</p>`
        }
        const response=await transport.sendMail(mailOptions)
        return response
