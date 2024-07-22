@@ -5,7 +5,7 @@ function page() {
 
   return (
     <div>
-     hello dash
+     hello
     </div>
   )
 }

@@ -1,4 +1,5 @@
 
+import Header from "../../@/components/ui/Header";
 import Sidebar from "../../@/components/ui/sidebar";
 export default function Layout({
   children,
@@ -6,9 +7,10 @@ export default function Layout({
   children: React.ReactNode;
 }): JSX.Element {
   return (
-    <div>
-      <Sidebar/>
-        {children}
+    <div className="flex flex-col min-h-screen"> 
+      <Header/>
+      {children}
+         
     </div>
   );
 }
