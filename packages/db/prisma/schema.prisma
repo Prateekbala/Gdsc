@@ -27,6 +27,8 @@ model Project {
   id            Int        @id @default(autoincrement()) 
   name          String         @unique
   description   String
+  GitHub        String
+  TechStack     String
   Hostedlink     String       
   imageLink      String         
   createdAt     DateTime       @default(now())
