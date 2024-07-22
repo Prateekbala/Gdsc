@@ -1,3 +1,4 @@
+'use client';
 import { RxDashboard } from 'react-icons/rx';
 import { FaProjectDiagram } from 'react-icons/fa';
 import { LiaRobotSolid } from 'react-icons/lia';
@@ -8,12 +9,11 @@ const navItems = [
   { link: '/', name: 'Dashboard', icon: RxDashboard },
   { link: '#', name: 'Project Manager', icon: FaProjectDiagram },
   { link: '/ai', name: 'AI Prompt', icon: LiaRobotSolid },
-  { link: '/auth', name: 'Auth', icon: RiLockPasswordLine },
 ];
 
 const Sidebar = () => {
   return (
-    <aside className='fixed top-0 left-0 z-40 w-64 h-screen pt-20 bg-white border-r border-gray-200'>
+    <aside className='fixed top-20 left-0 z-40 w-64 h-screen pt-20 bg-white border-r border-gray-200'>
       <div className='h-full px-3 pb-4 overflow-y-auto bg-white'>
         <ul className='space-y-2 font-medium'>
           {navItems.map(item => (

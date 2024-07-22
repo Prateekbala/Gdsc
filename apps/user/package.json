@@ -21,6 +21,8 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
+    "flowbite": "^2.3.0",
+    "flowbite-react": "^0.10.1",
     "lucide-react": "^0.412.0",
     "next": "14.2.5",
     "next-auth": "^4.24.7",
