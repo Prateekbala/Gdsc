@@ -1,62 +1,146 @@
-"use client"
-import React from 'react'
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { Button } from "../../../@/components/ui/button"
+"use client";
+import * as z from "zod";
+import { useEdgeStore } from '../../../@/lib/edgestore';
+import { projectSchema } from "../../../schemas/projectSchema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../../@/components/ui/form"
-import { Input } from "../../../@/components/ui/input"
-const formSchema = z.object({
-  username: z.string().min(2).max(50),
-})
+} from "../../../@/components/ui/form";
+import { Input } from "../../../@/components/ui/input";
+import { Button } from "../../../@/components/ui/button";
+import { useState } from "react";
 
-function page() {
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-          username: "",
-        },
-      })
-      function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
-      }
+export default function Home() {
+
+  const [file, setFile] = useState<File>();
+  const [progress,setProgress] = useState(0);
+  const [urls, setUrls] = useState<{ urls:String|null}>()
+  const { edgestore } = useEdgeStore();
+  const form = useForm<z.infer<typeof projectSchema>>({
+    resolver: zodResolver(projectSchema),
+    defaultValues: {
+      name: '',
+      description: '',
+      GitHub: '',
+      TechStack: '',
+      Hostedlink: '',
+    },
+  });
+
+  const handleSubmit = (values: z.infer<typeof projectSchema>) => {
+    console.log({ values });
+  };
+
   return (
-    <div className='mt-12 py-1'>
-        <div className="">
-        <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field}b />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(handleSubmit)}
+          className="max-w-md w-full flex flex-col gap-4"
+        >
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Input placeholder="Description" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="GitHub"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Paste your GitHub Link</FormLabel>
+                <FormControl>
+                  <Input placeholder="GitHub Link" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="TechStack"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Tech Stack Used</FormLabel>
+                <FormControl>
+                  <Input placeholder="Tech Stack" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="Hostedlink"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Hosted Link</FormLabel>
+                <FormControl>
+                  <Input placeholder="Hosted Link" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="flex flex-col items-center m-6 gap-2">
+          <input
+        type="file"
+        onChange={(e) => {
+          setFile(e.target.files?.[0]);
+        }}
         />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+        <div className="h-[6px] w-44 border rounded overflow-hidden">
+          <div className="h-full bg-green-600 transition-all duration-150" style={{width:`${progress}%`}}/>
         </div>
-      
-    </div>
-  )
+        <button className="bg-black text-white rounded px-2 hover:opacity-80" 
+        onClick={async () => {
+          if (file) {
+            const res = await edgestore.publicFiles.upload({
+              file,
+              onProgressChange: (progress) => {
+               setProgress(progress)
+              },
+            });
+            setUrls({urls:res.url});
+            console.log(res);
+          }
+        }}
+      >
+        Upload
+      </button>
+      </div>
+          <Button type="submit" className="w-full bg-black text-white">
+            Submit
+          </Button>
+        </form>
+      </Form>
+    </main>
+  );
 }
-
-export default page
-
