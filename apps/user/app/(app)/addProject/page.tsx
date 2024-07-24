@@ -15,12 +15,14 @@ import {
 import { Input } from "../../../@/components/ui/input";
 import { Button } from "../../../@/components/ui/button";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import axios from 'axios';
+import { Loader2 } from 'lucide-react';
 
 export default function Home() {
-
   const [file, setFile] = useState<File>();
-  const [progress,setProgress] = useState(0);
-  const [urls, setUrls] = useState<{ urls:String|null}>()
+  const [progress, setProgress] = useState(0);
+  const [url, setUrl] = useState<string | null>(null);
   const { edgestore } = useEdgeStore();
   const form = useForm<z.infer<typeof projectSchema>>({
     resolver: zodResolver(projectSchema),
@@ -32,9 +34,28 @@ export default function Home() {
       Hostedlink: '',
     },
   });
+const [IsSubmitting,setIsSubmitting]=useState(false)
+  
+  const router = useRouter();
 
-  const handleSubmit = (values: z.infer<typeof projectSchema>) => {
-    console.log({ values });
+  const handleSubmit = async (data: z.infer<typeof projectSchema>) => {
+    setIsSubmitting(true)
+    if (url) {
+      try {
+        const response = await axios.post('/api/saveProject', {
+          ...data,
+          imageLink: url,
+        });
+        setIsSubmitting(false);
+        
+      } catch (error) {
+        console.error('Error saving project:', error);
+        setIsSubmitting(false);
+      }
+    } else {
+      setIsSubmitting(false);
+      console.error('No URL found for the uploaded file');
+    }
   };
 
   return (
@@ -110,34 +131,42 @@ export default function Home() {
             )}
           />
           <div className="flex flex-col items-center m-6 gap-2">
-          <input
-        type="file"
-        onChange={(e) => {
-          setFile(e.target.files?.[0]);
-        }}
-        />
-        <div className="h-[6px] w-44 border rounded overflow-hidden">
-          <div className="h-full bg-green-600 transition-all duration-150" style={{width:`${progress}%`}}/>
-        </div>
-        <button className="bg-black text-white rounded px-2 hover:opacity-80" 
-        onClick={async () => {
-          if (file) {
-            const res = await edgestore.publicFiles.upload({
-              file,
-              onProgressChange: (progress) => {
-               setProgress(progress)
-              },
-            });
-            setUrls({urls:res.url});
-            console.log(res);
-          }
-        }}
-      >
-        Upload
-      </button>
-      </div>
-          <Button type="submit" className="w-full bg-black text-white">
-            Submit
+            <input
+              type="file"
+              onChange={(e) => {
+                setFile(e.target.files?.[0]);
+              }}
+            />
+            <div className="h-[6px] w-44 border rounded overflow-hidden">
+              <div className="h-full bg-green-600 transition-all duration-150" style={{ width: `${progress}%` }} />
+            </div>
+            <button className="bg-black text-white rounded px-2 hover:opacity-80"
+              type="button"
+              onClick={async () => {
+                if (file) {
+                  const res = await edgestore.publicFiles.upload({
+                    file,
+                    onProgressChange: (progress) => {
+                      setProgress(progress);
+                    },
+                  });
+                  setUrl(res.url); 
+                  console.log(res);
+                }
+              }}
+            >
+              Upload
+            </button>
+          </div>
+          <Button type="submit" className="w-full bg-black text-white " disabled={IsSubmitting}>
+          {IsSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Please wait
+                </>
+              ) : (
+                'Submit'
+              )}
           </Button>
         </form>
       </Form>

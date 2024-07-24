@@ -1,6 +1,5 @@
 import  bcrypt  from 'bcrypt';
 import db from "@repo/db/client"
-import { sendVerificationEmail } from '../../api/send/route'
 import {sendEmail} from "../../../mail/mailer"
 import { NextResponse } from 'next/server';
 export async function POST(req:Request){
