@@ -15,6 +15,7 @@ datasource db {
 
 model User {
   id    Int     @id @default(autoincrement())
+  name String   @default("user")
   email String  @unique
   password String 
   isverified Boolean @default(false)
@@ -39,6 +40,11 @@ model Project {
 
 model Admin{
   id    Int     @id @default(autoincrement())
+  name String @default("admin")
   email String  @unique
   password String 
+  isverified Boolean @default(false)
+  verifyToken String
+  verifyTokenExpiry DateTime
+  createdAt DateTime
 }

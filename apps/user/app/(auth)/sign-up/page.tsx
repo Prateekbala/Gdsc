@@ -36,6 +36,7 @@ const [IsSubmitting,setIsSubmitting]=useState(false)
 const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
+      name:"",
       email: "",
       password:"",
      conformPassword:"",
@@ -83,6 +84,19 @@ async function onSubmit(data: z.infer<typeof signUpSchema>) {
       </div>
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Your Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="email"

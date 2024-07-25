@@ -12,7 +12,6 @@ import {
   FormLabel,
   FormMessage,
 } from "../../../../@/components/ui/form";
-import { Textarea } from "../../../../@/components/ui/textarea"
 import { Input } from "../../../../@/components/ui/input";
 import { Button } from "../../../../@/components/ui/button";
 import { useState , useEffect } from "react";
@@ -108,7 +107,7 @@ const [IsSubmitting,setIsSubmitting]=useState(false)
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Description" {...field} />
+                  <Input placeholder="Description" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

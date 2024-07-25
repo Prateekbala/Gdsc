@@ -13,30 +13,30 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Error in api/Verify-email' }, { status: 400 });
     }
 
-    const user = await db.user.findFirst({
+    const admin = await db.admin.findFirst({
       where:{
         email:email
       }
     });
 
-    if (!user) {
+    if (!admin) {
       return Response.json(
         { success: false, message: 'Please First Sign-Up' },
         { status: 404 }
       );
     }
 
-    console.log("user.verify code is :",user.verifyToken)
+    console.log("admin.verify code is :",admin.verifyToken)
     console.log("verify token is :",verifyTokenEncoded)
-    const isCodeValid = (user.verifyToken== verifyTokenEncoded)
-    const expiryDate = new Date(user.verifyTokenExpiry);
+    const isCodeValid = (admin.verifyToken== verifyTokenEncoded)
+    const expiryDate = new Date(admin.verifyTokenExpiry);
     const currentDate = new Date();
     const isCodeNotExpired = expiryDate > currentDate;
     console.log(isCodeValid)
     console.log(isCodeNotExpired)
     try {
       if (isCodeValid && isCodeNotExpired) {
-        await db.user.update({
+        await db.admin.update({
           where: { email: email },
           data: { isverified: true },
         });
@@ -68,9 +68,9 @@ export async function POST(request: Request) {
         { status: 500 });
     }
   } catch (error) {
-    console.error('Error verifying user:', error);
+    console.error('Error verifying admin:', error);
     return Response.json(
-      { success: false, message: 'Error verifying user' },
+      { success: false, message: 'Error verifying admin' },
       { status: 500 }
     );
   }

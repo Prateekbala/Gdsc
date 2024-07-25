@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 export async function POST(req:Request){
   console.log("came to /api/sign-up");
     const body=await req.json();
-    const {email,password}=body
+    const {email,password,name}=body
     
     try {
       const existingUser=await db.user.findFirst({
@@ -33,6 +33,7 @@ export async function POST(req:Request){
             await db.user.update({
               where:{email:email},
               data:{
+                name:name,
                 password: hashedPassword,
                 verifyToken: verifyTokenEncoded,
                 verifyTokenExpiry: new Date(Date.now() + 3600000),
@@ -45,6 +46,7 @@ export async function POST(req:Request){
       else{
         const newUser= await db.user.create({
           data:{
+            name:name,
             email:email,
             password:hashedPassword,
             isverified:false,

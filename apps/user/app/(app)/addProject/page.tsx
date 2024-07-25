@@ -18,7 +18,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from 'axios';
 import { Loader2 } from 'lucide-react';
-import { Textarea } from "../../../@/components/ui/textarea"
+
 export default function Home() {
   const [file, setFile] = useState<File>();
   const [progress, setProgress] = useState(0);
@@ -47,7 +47,6 @@ const [IsSubmitting,setIsSubmitting]=useState(false)
           imageLink: url,
         });
         setIsSubmitting(false);
-      router.replace("/dashboard");
         
       } catch (error) {
         console.error('Error saving project:', error);
@@ -86,7 +85,7 @@ const [IsSubmitting,setIsSubmitting]=useState(false)
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Description" {...field} />
+                  <Input placeholder="Description" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

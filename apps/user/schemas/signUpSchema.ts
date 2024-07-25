@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 
 export const signUpSchema = z.object({
+  name:z.string(),
   email: z.string().email({
     message: "Email must be valid",
   }).refine(email => email.endsWith('@lnmiit.ac.in'), {
