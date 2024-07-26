@@ -33,8 +33,8 @@ export default function Layout({
             </div>
             <div className='hidden sm:flex gap-4 mr-7'>
               <Link href="/dashboard" className="font-semibold text-gray-900 hover:text-cyan-600 transition duration-300 ease-in-out">Dashboard</Link>
-              <Link href="/addProject" className="font-semibold text-gray-900 hover:text-cyan-600 transition duration-300 ease-in-out">Add Project</Link>
-              <Link href="/integrations" className="font-semibold text-gray-900 hover:text-cyan-600 transition duration-300 ease-in-out">Integrations</Link>
+              <Link href="#" className="font-semibold text-gray-900 hover:text-cyan-600 transition duration-300 ease-in-out">To be added</Link>
+              <Link href="#" className="font-semibold text-gray-900 hover:text-cyan-600 transition duration-300 ease-in-out">To be added</Link>
             </div>
             <div className='flex items-center'>
               <div className='relative items-center ml-3'>
@@ -74,8 +74,8 @@ export default function Layout({
           <div className='sm:hidden'>
             <div className='flex flex-col items-start px-3 py-2'>
               <Link href="/dashboard" className="block mt-2 font-semibold text-gray-900 hover:text-cyan-600 transition duration-300 ease-in-out">Dashboard</Link>
-              <Link href="/addProject" className="block mt-2 font-semibold text-gray-900 hover:text-cyan-600 transition duration-300 ease-in-out">Add Project</Link>
-              <Link href="/integrations" className="block mt-2 font-semibold text-gray-900 hover:text-cyan-600 transition duration-300 ease-in-out">Integrations</Link>
+              <Link href="#" className="block mt-2 font-semibold text-gray-900 hover:text-cyan-600 transition duration-300 ease-in-out">To be added</Link>
+              <Link href="#" className="block mt-2 font-semibold text-gray-900 hover:text-cyan-600 transition duration-300 ease-in-out">To be added</Link>
             </div>
           </div>
         )}

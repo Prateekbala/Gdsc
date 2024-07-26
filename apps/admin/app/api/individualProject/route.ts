@@ -18,25 +18,13 @@ export async function POST(req:Request) {
         {status:400}
         )
     }
-
-    const userId = Number(session?.user?.id);
     const body=await req.json();
     let {projectID}=body
     projectID=Number(projectID)
     console.log(projectID);
-    if (isNaN(projectID) || isNaN(userId)) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Invalid project ID or user ID"
-        },
-        { status: 400 }
-      );
-    }
     const project = await db.project.findFirst({
       where: {
         id: projectID,
-        userId: userId,
       },
     });
     if(!project){

@@ -21,6 +21,7 @@ model User {
   isverified Boolean @default(false)
   verifyToken String
   verifyTokenExpiry DateTime
+  messages       Message[]
   projects      Project[]
   createdAt DateTime
 }
@@ -47,4 +48,12 @@ model Admin{
   verifyToken String
   verifyTokenExpiry DateTime
   createdAt DateTime
+}
+model Message {
+  id            Int        @id @default(autoincrement())
+  description   String
+  projectId     Int
+  userId        Int
+  user          User       @relation(fields: [userId], references: [id])
+  createdAt     DateTime   @default(now())
 }

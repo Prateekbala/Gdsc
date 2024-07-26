@@ -18,13 +18,11 @@ export async function POST(req:Request) {
         {status:400}
         )
     }
-
-    const userId = Number(session?.user?.id);
     const body=await req.json();
     let {projectId}=body
     projectId=Number(projectId)
     const project = await db.project.findFirst({
-        where: { id: projectId, userId },
+        where: { id: projectId },
       });
 
       if (!project) {

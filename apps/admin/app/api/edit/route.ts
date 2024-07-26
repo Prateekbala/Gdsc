@@ -15,8 +15,6 @@ export async function POST(req: Request) {
     );
   }
 
-  const userId = Number(session.user.id);
-  console.log("User ID is", userId);
 
   const body = await req.json();
   let { name, description, GitHub, TechStack, Hostedlink, imageLink, projectID } = body;
@@ -41,7 +39,6 @@ export async function POST(req: Request) {
     const updatedProject = await db.project.update({
       where: {
         id: projectID,
-        userId: userId,
       },
       data: updateData,
     });
