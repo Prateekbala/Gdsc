@@ -75,6 +75,9 @@ const [IsSubmitting,setIsSubmitting]=useState(false)
       imageLink: url 
     })
     if(response.data.success){
+      await axios.post('/api/sendMessage',{
+        projectID
+      })
     router.replace("/dashboard");
     }
     setIsSubmitting(false)

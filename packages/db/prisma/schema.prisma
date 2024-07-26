@@ -52,7 +52,6 @@ model Admin{
 model Message {
   id            Int        @id @default(autoincrement())
   description   String
-  projectId     Int
   userId        Int
   user          User       @relation(fields: [userId], references: [id])
   createdAt     DateTime   @default(now())

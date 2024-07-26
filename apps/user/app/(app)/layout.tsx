@@ -34,7 +34,7 @@ export default function Layout({
             <div className='hidden sm:flex gap-4 mr-7'>
               <Link href="/dashboard" className="font-semibold text-gray-900 hover:text-cyan-600 transition duration-300 ease-in-out">Dashboard</Link>
               <Link href="/addProject" className="font-semibold text-gray-900 hover:text-cyan-600 transition duration-300 ease-in-out">Add Project</Link>
-              <Link href="/integrations" className="font-semibold text-gray-900 hover:text-cyan-600 transition duration-300 ease-in-out">Integrations</Link>
+              <Link href="/messages" className="font-semibold text-gray-900 hover:text-cyan-600 transition duration-300 ease-in-out">Messages</Link>
             </div>
             <div className='flex items-center'>
               <div className='relative items-center ml-3'>

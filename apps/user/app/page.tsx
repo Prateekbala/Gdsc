@@ -23,14 +23,15 @@ export default function Home() {
       signIn();
     }
     else if(item==="ADMIN"){
-      router.push(`${process.env.ADMIN_URL}`);
+      router.push(`${process.env.NEXT_PUBLIC_ADMIN_URL}`);
     }
   };
   const handleClick = () => {
-    router.push(`${process.env.ADMIN_URL}`);
+    router.push(`${process.env.NEXT_PUBLIC_ADMIN_URL}`);
   };
 
   return (
+    <div>
     <nav className="flex flex-wrap items-center justify-between p-3 bg-[#eeeee9]">
       <div className="flex items-center justify-between w-full sm:w-auto">
         <button
@@ -53,7 +54,7 @@ export default function Home() {
       <div className="hidden sm:flex items-center justify-end mx-2">
         <Button variant="contained" className="px-4 mx-2 py-2 bg-[#de8cde] text-white" onClick={handleClick}>Admin Login</Button>
         {session ? (
-          <Button variant="contained" className="px-4 py-2 bg-[#de8cde] text-white" onClick={async () => { signOut({ callbackUrl: `${process.env.USER_URL}`}) }}>Sign-Out</Button>
+          <Button variant="contained" className="px-4 py-2 bg-[#de8cde] text-white" onClick={async () => { signOut({ callbackUrl: `${process.env.NEXT_PUBLIC_USER_URL}`}) }}>Sign-Out</Button>
         ) : (
           <Button variant="contained" className="px-4 py-2 mx-2 bg-[#de8cde] text-white" onClick={async () => { signIn() }}>Sign-In</Button>
         )}
@@ -75,5 +76,7 @@ export default function Home() {
         ))}
       </div>
     </nav>
+    <h1>This is users page</h1>
+    </div>
   );
 }
