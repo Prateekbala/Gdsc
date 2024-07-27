@@ -30,6 +30,7 @@ export default function Home() {
     router.push(`${process.env.NEXT_PUBLIC_USER_URL}`);
   };
   return (
+    <div>
 <nav className="flex flex-wrap items-center justify-between p-3 bg-[#eeeee9]">
   <div className="flex items-center justify-between w-full sm:w-auto">
     <button
@@ -76,7 +77,8 @@ export default function Home() {
     ))}
   </div>
 </nav>
-
+<h1>This is ADMIN Page</h1>
+</div>
   );
 
 }

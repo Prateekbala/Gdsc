@@ -18,8 +18,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useToast } from '../../../@/components/ui/use-toast';
 import { signInSchema } from '../../../schemas/signInSchema';
+import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
 
   export default function SignInForm() {
+    const [IsSubmitting,setIsSubmitting]=useState(false)
     const router = useRouter();
   
     const form = useForm<z.infer<typeof signInSchema>>({
@@ -32,6 +35,7 @@ import { signInSchema } from '../../../schemas/signInSchema';
   
     const { toast } = useToast();
     const onSubmit = async (data: z.infer<typeof signInSchema>) => {
+      setIsSubmitting(true)
       const result = await signIn('credentials', {
         redirect: false,
         identifier: data.identifier,
@@ -45,26 +49,28 @@ import { signInSchema } from '../../../schemas/signInSchema';
             description: 'Incorrect username or password',
             variant: 'destructive',
           });
+          console.log("error in sign-in ###",result.error)
         } else {
           toast({
             title: 'Error',
             description: result.error,
             variant: 'destructive',
           });
+          console.log("error in sign-in ###",result.error)
         }
       }
-  
+      setIsSubmitting(false)
       if (result?.url) {
         router.replace('/dashboard');
       }
     };
   
     return (
-      <div className="flex justify-center items-center min-h-screen bg-gray-800">
+      <div className="flex justify-center items-center min-h-screen bg-slate-300">
         <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
           <div className="text-center">
             <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
-              Welcome Back
+            ADMIN sign-in
             </h1>
             <p className="mb-4">Sign in to continue </p>
           </div>
@@ -92,7 +98,16 @@ import { signInSchema } from '../../../schemas/signInSchema';
                   </FormItem>
                 )}
               />
-              <Button className='w-full' type="submit">Sign In</Button>
+                     <Button type="submit" className='w-full' disabled={IsSubmitting}>
+              {IsSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Please wait
+                </>
+              ) : (
+                'Sign IN'
+              )}
+            </Button>
             </form>
           </Form>
           <div className="text-center mt-4">

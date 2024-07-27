@@ -1,3 +1,4 @@
+
 import db from '@repo/db/client';
 
 export async function POST(request: Request) {
@@ -13,30 +14,30 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Error in api/Verify-email' }, { status: 400 });
     }
 
-    const admin = await db.admin.findFirst({
+    const user = await db.user.findFirst({
       where:{
         email:email
       }
     });
 
-    if (!admin) {
+    if (!user) {
       return Response.json(
         { success: false, message: 'Please First Sign-Up' },
         { status: 404 }
       );
     }
 
-    console.log("admin.verify code is :",admin.verifyToken)
+    console.log("user.verify code is :",user.verifyToken)
     console.log("verify token is :",verifyTokenEncoded)
-    const isCodeValid = (admin.verifyToken== verifyTokenEncoded)
-    const expiryDate = new Date(admin.verifyTokenExpiry);
+    const isCodeValid = (user.verifyToken== verifyTokenEncoded)
+    const expiryDate = new Date(user.verifyTokenExpiry);
     const currentDate = new Date();
     const isCodeNotExpired = expiryDate > currentDate;
     console.log(isCodeValid)
     console.log(isCodeNotExpired)
     try {
       if (isCodeValid && isCodeNotExpired) {
-        await db.admin.update({
+        await db.user.update({
           where: { email: email },
           data: { isverified: true },
         });
@@ -68,9 +69,9 @@ export async function POST(request: Request) {
         { status: 500 });
     }
   } catch (error) {
-    console.error('Error verifying admin:', error);
+    console.error('Error verifying user:', error);
     return Response.json(
-      { success: false, message: 'Error verifying admin' },
+      { success: false, message: 'Error verifying user' },
       { status: 500 }
     );
   }

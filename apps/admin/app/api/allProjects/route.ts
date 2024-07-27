@@ -1,4 +1,3 @@
-// app/api/allProjects/route.ts
 
 import { NextResponse } from 'next/server';
 import db from '@repo/db/client';
