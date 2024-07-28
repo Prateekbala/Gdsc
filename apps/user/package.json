@@ -2,13 +2,16 @@
   "name": "web",
   "version": "0.1.0",
   "private": true,
+  "prisma": {
+    "schema": "../../packages/db/prisma/schema.prisma"
+  },
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "clean": "rm -rf .next && rm -rf node_modules/.cache",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate --schema=../../packages/db/prisma/schema.prisma"
   },
   "dependencies": {
     "@edgestore/react": "^0.2.1",
@@ -40,6 +43,7 @@
     "next": "14.2.5",
     "next-auth": "^4.24.7",
     "nodemailer": "^6.9.14",
+    "prisma": "^5.17.0",
     "react": "^18",
     "react-dom": "^18",
     "react-google-recaptcha-v3": "^1.10.1",
