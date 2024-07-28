@@ -1,8 +1,9 @@
-// pages/api/messages.ts
 import { NextResponse } from 'next/server';
 import db from '@repo/db/client';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]/options';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
   try {
